@@ -2,6 +2,7 @@
 
 // Lets import our web framework
 var express = require("express");
+var mongoose = require("mongoose");
 
 // Initialise our app
 const app = express();
@@ -11,7 +12,19 @@ const app = express();
  * The default port number is `3000`
  * Take note on that as we will come to that.
  */
-app.set("port", 3000);
+app.set("port", process.env.PORT || 3000);
+
+
+// Connect to database
+mongoose.connect("mongodb://mongo:27017/docker_nodejs_app", {
+  useNewUrlParser: true,
+  useCreateIndex: true
+});
+
+mongoose.connection.on("open", err => {
+  if (err) console.log("Error connecting to our mongo database");
+  console.log("Connected to mongo database successfully");
+});
 
 /**
  * To ensure works as it should we will create a
